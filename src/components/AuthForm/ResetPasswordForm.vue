@@ -1,18 +1,18 @@
 <script setup>
 import {ref} from 'vue'
-import Button from 'primevue/button'
-import InputText from 'primevue/inputtext'
 import {z} from 'zod'
 import {zodResolver} from '@primevue/forms/resolvers/zod'
 import {Form} from '@primevue/forms'
-import {Message} from 'primevue'
+import Button from 'primevue/button'
+import InputText from 'primevue/inputtext'
+import Message from 'primevue/message'
 
 const formData = ref({
   email: '',
 })
 
 const rules = z.object({
-  email: z.email({message: 'Некорректный email'}),
+  email: z.string().email({message: 'Некорректный email'}),
 })
 
 const resolver = ref(zodResolver(rules))
@@ -31,7 +31,7 @@ const submitForm = async ({valid}) =>
    :validate-on-value-update="false"
    @submit="submitForm">
   <div class="mb-3">
-    <inputText name="email"
+    <InputText name="email"
        placeholder="Введите email"
        type="text"
        v-model="formData.email"
@@ -40,10 +40,10 @@ const submitForm = async ({valid}) =>
        severity="error"
        variant="simple"
        size="small">
-      {{ $form.email?.error.message }}
+      {{ $form.email.error.message }}
     </Message>
   </div>
-  <div class="grid grid-cols-2 gap-3">
+  <div class="grid">
     <Button type="submit"
        class="w-full"
        label="Сброс пароля" />
