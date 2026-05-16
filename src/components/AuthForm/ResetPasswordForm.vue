@@ -2,14 +2,17 @@
 import {ref} from 'vue'
 import {z} from 'zod'
 import {zodResolver} from '@primevue/forms/resolvers/zod'
+import { useToastNotification } from '@/composables/useToastNotifications'
+import { useAuth } from '@/composables/useAuth'
 import {Form} from '@primevue/forms'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 
-const formData = ref({
-  email: '',
-})
+const { showToast } = useToastNotification()
+const { resetPassword, loading, errorMessage } = useAuth()
+
+const email = ref('')
 
 const rules = z.object({
   email: z.string().email({message: 'Некорректный email'}),
@@ -17,15 +20,22 @@ const rules = z.object({
 
 const resolver = ref(zodResolver(rules))
 
-const submitForm = async ({valid}) =>
-{
-  console.log(valid)
+const submitForm = async ({ valid }) => {
+  if (!valid) return
+
+  try {
+    await resetPassword(email.value)
+    showToast('success','Ссылка на сброс пароля уже на вашей почте',email.value)
+  } catch (error) {
+    console.log(error);
+    showToast('error', 'Ошибка входа', errorMessage.value)
+  }
 }
 </script>
 
 <template>
 <Form v-slot="$form"
-   :initial-values="formData"
+   :initial-values="{email}"
    :resolver="resolver"
    :validate-on-blur="true"
    :validate-on-value-update="false"
@@ -34,7 +44,7 @@ const submitForm = async ({valid}) =>
     <InputText name="email"
        placeholder="Введите email"
        type="text"
-       v-model="formData.email"
+       v-model="email"
        class="w-full" />
     <Message v-if="$form.email?.invalid"
        severity="error"
@@ -46,7 +56,8 @@ const submitForm = async ({valid}) =>
   <div class="grid">
     <Button type="submit"
        class="w-full"
-       label="Сброс пароля" />
+       label="Сброс пароля"
+       :loading="loading" />
   </div>
 </Form>
 </template>

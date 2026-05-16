@@ -10,6 +10,7 @@ export function useRequest() {
     try {
       return await fn()
     } catch (error) {
+      console.log(error)
       errorMessage.value = error.message
       throw error
     } finally {

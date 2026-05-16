@@ -12,7 +12,7 @@ import Message from 'primevue/message'
 
 
 const { showToast } = useToastNotification()
-const { signUp, loading, errorMessage } = useAuth()
+const { signUp, signInWithGithub, loading, errorMessage } = useAuth()
 
 const formData = ref({
   email: '',
@@ -34,9 +34,11 @@ const submitForm = async ({ valid }) => {
   try {
     await signUp({
       email: formData.value.email,
-      password: formData.value.password
+      password: formData.value.password,
+      firstname: formData.value.firstname
     })
-  } catch {
+  } catch (error) {
+    console.log(error);
     showToast('error','Ошибка регистрации', errorMessage.value)
   }
 }
@@ -68,7 +70,7 @@ const submitForm = async ({ valid }) => {
     </div>
     <div class="grid grid-cols-2 gap-3">
       <Button type="submit" class="w-full" label="Регистрация" :loading="loading"/>
-      <Button type="submit" icon="pi pi-github" class="w-full" label="GitHub" severity="contrast" />
+      <Button @click="signInWithGithub" icon="pi pi-github" class="w-full" label="GitHub" severity="contrast" />
     </div>
   </Form>
 </template>
