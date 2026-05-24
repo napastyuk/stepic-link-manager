@@ -28,8 +28,8 @@ const router = createRouter({
 
 const getUser = async (next) => {
   user = await supabase.auth.getSession()
-  if (!user?.data?.session ) {
-    next({name: 'auth'})
+  if (!user?.data?.session) {
+    next({ name: 'auth' })
   } else {
     next()
   }

@@ -31,7 +31,7 @@ export function useAuth() {
   const resetPassword = async (email) => {
     return await handleRequest(async () => {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:5173/reset-password'
+        redirectTo: 'http://localhost:5173/reset-password',
       })
       if (error) throw error
       return data
@@ -40,7 +40,7 @@ export function useAuth() {
 
   const updatePassword = async (password) => {
     return await handleRequest(async () => {
-      const { data, error } = await supabase.auth.updateUser({password})
+      const { data, error } = await supabase.auth.updateUser({ password })
       if (error) throw error
       return data
     })
@@ -48,7 +48,7 @@ export function useAuth() {
 
   const signInWithGithub = async () => {
     return await handleRequest(async () => {
-      const { data, error } = await supabase.auth.signInWithOAuth ({provider:'github'})
+      const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'github' })
       if (error) throw error
       return data
     })
@@ -62,6 +62,14 @@ export function useAuth() {
     })
   }
 
-
-  return { signUp, signIn, signOut, resetPassword, updatePassword, signInWithGithub, loading, errorMessage }
+  return {
+    signUp,
+    signIn,
+    signOut,
+    resetPassword,
+    updatePassword,
+    signInWithGithub,
+    loading,
+    errorMessage,
+  }
 }

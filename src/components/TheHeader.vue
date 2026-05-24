@@ -26,14 +26,14 @@ const signOutUser = async () => {
     authStore.resetUser()
     await router.replace({ name: 'auth' })
   } catch (error) {
+    console.error(error)
     showToast('error', 'Ошибка выхода', errorMessage.value)
   }
 }
-
 </script>
 
 <template>
-  <CategoriesModal v-model="CategoriesDialogVisible"/>
+  <CategoriesModal v-model="CategoriesDialogVisible" />
   <div class="mb-5">
     <Menubar>
       <template #start>
@@ -41,14 +41,14 @@ const signOutUser = async () => {
           <span class="font-bold">Link Manager</span>
           <div class="flex item-center gap-2">
             <Button icon="pi pi-link" rounded />
-            <Button icon="pi pi-folder" rounded @click="CategoriesDialogVisible=true" />
+            <Button icon="pi pi-folder" rounded @click="CategoriesDialogVisible = true" />
           </div>
         </div>
       </template>
       <template #end>
         <div class="flex items-center gap-2">
           <Avatar :label="emailFirstLetter" size="large" shape="circle" />
-          <Button icon="pi pi-sign-out" rounded severity="secondary" @click="signOutUser"/>
+          <Button icon="pi pi-sign-out" rounded severity="secondary" @click="signOutUser" />
         </div>
       </template>
     </Menubar>

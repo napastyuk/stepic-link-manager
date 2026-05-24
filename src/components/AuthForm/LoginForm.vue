@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 import { z } from 'zod'
 import { zodResolver } from '@primevue/forms/resolvers/zod'
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/userStore'
 import { useToastNotification } from '@/composables/useToastNotifications'
 import { useAuth } from '@/composables/useAuth'
 import { Form } from '@primevue/forms'
@@ -38,26 +38,43 @@ const submitForm = async ({ valid }) => {
       password: formData.value.password,
     })
     await authStore.getUser()
-    await router.replace({name: 'home'})
+    await router.replace({ name: 'home' })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     showToast('error', 'Ошибка входа', errorMessage.value)
   }
 }
 </script>
 
 <template>
-  <Form v-slot="$form" :initial-values="formData" :resolver="resolver" :validate-on-blur="true"
-    :validate-on-value-update="false" @submit="submitForm">
+  <Form
+    v-slot="$form"
+    :initial-values="formData"
+    :resolver="resolver"
+    :validate-on-blur="true"
+    :validate-on-value-update="false"
+    @submit="submitForm"
+  >
     <div class="mb-3">
-      <InputText name="email" placeholder="Введите email" type="text" v-model="formData.email" class="w-full" />
+      <InputText
+        name="email"
+        placeholder="Введите email"
+        type="text"
+        v-model="formData.email"
+        class="w-full"
+      />
       <Message v-if="$form.email?.invalid" severity="error" variant="simple" size="small">
         {{ $form.email.error.message }}
       </Message>
     </div>
     <div class="mb-3">
-      <InputText name="password" placeholder="Введите пароль" type="password" v-model="formData.password"
-        class="w-full" />
+      <InputText
+        name="password"
+        placeholder="Введите пароль"
+        type="password"
+        v-model="formData.password"
+        class="w-full"
+      />
       <Message v-if="$form.password?.invalid" severity="error" variant="simple" size="small">
         {{ $form.password.error.message }}
       </Message>
@@ -65,7 +82,13 @@ const submitForm = async ({ valid }) => {
     <span class="cursor-pointer mb-3 block" @click="emits('resetPassword')">Забыли пароль?</span>
     <div class="grid grid-cols-2 gap-3">
       <Button type="submit" class="w-full" label="Вход" :loading="loading" />
-      <Button @click="signInWithGithub" icon="pi pi-github" class="w-full" label="GitHub" severity="contrast" />
+      <Button
+        @click="signInWithGithub"
+        icon="pi pi-github"
+        class="w-full"
+        label="GitHub"
+        severity="contrast"
+      />
     </div>
   </Form>
 </template>

@@ -18,34 +18,45 @@ const router = useRouter()
 const password = ref('')
 
 const rules = z.object({
-    password: z.string().min(6, { message: 'Должно быть минимум 6 символов' }),
+  password: z.string().min(6, { message: 'Должно быть минимум 6 символов' }),
 })
 
 const resolver = ref(zodResolver(rules))
 
 const submitForm = async ({ valid }) => {
-    if (!valid) return
+  if (!valid) return
 
-    try {
-        await updatePassword(password.value)
-        router.replace('/auth')
-    } catch (error) {
-        console.log(error);
-        showToast('error', 'Ошибка при создании нового пароля', errorMessage.value)
-    }
+  try {
+    await updatePassword(password.value)
+    router.replace('/auth')
+  } catch (error) {
+    console.log(error)
+    showToast('error', 'Ошибка при создании нового пароля', errorMessage.value)
+  }
 }
 </script>
 
 <template>
-    <Form v-slot="$form" :initial-values="{ password }" :resolver="resolver" :validate-on-blur="true"
-        :validate-on-value-update="false" @submit="submitForm">
-        <div class="mb-3">
-            <InputText name="password" placeholder="Введите новый пароль" type="password" v-model="password"
-                class="w-full" />
-            <Message v-if="$form.password?.invalid" severity="error" variant="simple" size="small">
-                {{ $form.password.error.message }}
-            </Message>
-        </div>
-        <Button type="submit" class="w-full" label="Задать новый пароль" :loading="loading" />
-    </Form>
+  <Form
+    v-slot="$form"
+    :initial-values="{ password }"
+    :resolver="resolver"
+    :validate-on-blur="true"
+    :validate-on-value-update="false"
+    @submit="submitForm"
+  >
+    <div class="mb-3">
+      <InputText
+        name="password"
+        placeholder="Введите новый пароль"
+        type="password"
+        v-model="password"
+        class="w-full"
+      />
+      <Message v-if="$form.password?.invalid" severity="error" variant="simple" size="small">
+        {{ $form.password.error.message }}
+      </Message>
+    </div>
+    <Button type="submit" class="w-full" label="Задать новый пароль" :loading="loading" />
+  </Form>
 </template>

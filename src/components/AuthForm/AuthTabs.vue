@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
@@ -13,21 +13,21 @@ const activeTab = ref('signin') // signin | signup | reset
 </script>
 
 <template>
-<Tabs v-model:value="activeTab">
-  <TabList>
-    <Tab value="signin">Вход</Tab>
-    <Tab value="signup">Регистрация</Tab>
-  </TabList>
-  <TabPanels>
-    <TabPanel value="signin">
-      <LoginForm @resetPassword="activeTab = 'reset'" />
-    </TabPanel>
-    <TabPanel value="signup">
-      <RegistrationForm />
-    </TabPanel>
-    <TabPanel value="reset">
-      <ResetPasswordForm />
-    </TabPanel>
-  </TabPanels>
-</Tabs>
+  <Tabs v-model:value="activeTab">
+    <TabList>
+      <Tab value="signin">Вход</Tab>
+      <Tab value="signup">Регистрация</Tab>
+    </TabList>
+    <TabPanels>
+      <TabPanel value="signin">
+        <LoginForm @resetPassword="activeTab = 'reset'" />
+      </TabPanel>
+      <TabPanel value="signup">
+        <RegistrationForm />
+      </TabPanel>
+      <TabPanel value="reset">
+        <ResetPasswordForm />
+      </TabPanel>
+    </TabPanels>
+  </Tabs>
 </template>

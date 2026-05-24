@@ -10,7 +10,6 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Message from 'primevue/message'
 
-
 const { showToast } = useToastNotification()
 const { signUp, signInWithGithub, loading, errorMessage } = useAuth()
 
@@ -35,42 +34,70 @@ const submitForm = async ({ valid }) => {
     await signUp({
       email: formData.value.email,
       password: formData.value.password,
-      firstname: formData.value.firstname
+      firstname: formData.value.firstname,
     })
   } catch (error) {
-    console.log(error);
-    showToast('error','Ошибка регистрации', errorMessage.value)
+    console.log(error)
+    showToast('error', 'Ошибка регистрации', errorMessage.value)
   }
 }
 </script>
 
 <template>
   <Toast />
-  <Form v-slot="$form" :initial-values="formData" :resolver="resolver" :validate-on-blur="true"
-    :validate-on-value-update="false" @submit="submitForm">
+  <Form
+    v-slot="$form"
+    :initial-values="formData"
+    :resolver="resolver"
+    :validate-on-blur="true"
+    :validate-on-value-update="false"
+    @submit="submitForm"
+  >
     <div class="mb-3">
-      <InputText name="email" placeholder="Введите email" type="text" v-model="formData.email" class="w-full" />
+      <InputText
+        name="email"
+        placeholder="Введите email"
+        type="text"
+        v-model="formData.email"
+        class="w-full"
+      />
       <Message v-if="$form.email?.invalid" severity="error" variant="simple" size="small">
         {{ $form.email.error.message }}
       </Message>
     </div>
     <div class="mb-3">
-      <InputText name="password" placeholder="Введите пароль" type="password" v-model="formData.password"
-        class="w-full" />
+      <InputText
+        name="password"
+        placeholder="Введите пароль"
+        type="password"
+        v-model="formData.password"
+        class="w-full"
+      />
       <Message v-if="$form.password?.invalid" severity="error" variant="simple" size="small">
         {{ $form.password.error.message }}
       </Message>
     </div>
     <div class="mb-3">
-      <InputText name="firstname" placeholder="Введите свое имя" type="text" v-model="formData.firstname"
-        class="w-full" />
+      <InputText
+        name="firstname"
+        placeholder="Введите свое имя"
+        type="text"
+        v-model="formData.firstname"
+        class="w-full"
+      />
       <Message v-if="$form.firstname?.invalid" severity="error" variant="simple" size="small">
         {{ $form.firstname.error.message }}
       </Message>
     </div>
     <div class="grid grid-cols-2 gap-3">
-      <Button type="submit" class="w-full" label="Регистрация" :loading="loading"/>
-      <Button @click="signInWithGithub" icon="pi pi-github" class="w-full" label="GitHub" severity="contrast" />
+      <Button type="submit" class="w-full" label="Регистрация" :loading="loading" />
+      <Button
+        @click="signInWithGithub"
+        icon="pi pi-github"
+        class="w-full"
+        label="GitHub"
+        severity="contrast"
+      />
     </div>
   </Form>
 </template>
