@@ -8,6 +8,7 @@ import { useUserStore } from '@/stores/userStore'
 import { useAuth } from '@/composables/useAuth'
 import { useToastNotification } from '@/composables/useToastNotifications'
 import CategoriesModal from './Modals/CategoriesModal.vue'
+import CreateLinkModal from './Modals/CreateLinkModal.vue'
 
 const authStore = useUserStore()
 const router = useRouter()
@@ -15,6 +16,7 @@ const { showToast } = useToastNotification()
 const { signOut, errorMessage } = useAuth()
 
 const CategoriesDialogVisible = ref(false)
+const CreateLinkDialogVisible = ref(false)
 
 const emailFirstLetter = computed(() => {
   return authStore.user?.email ? authStore.user?.email[0].toUpperCase() : ''
@@ -34,13 +36,14 @@ const signOutUser = async () => {
 
 <template>
   <CategoriesModal v-model="CategoriesDialogVisible" />
+  <CreateLinkModal v-model="CreateLinkDialogVisible" />
   <div class="mb-5">
     <Menubar>
       <template #start>
         <div class="flex item-center gap-2">
           <span class="font-bold">Link Manager</span>
           <div class="flex item-center gap-2">
-            <Button icon="pi pi-link" rounded />
+            <Button icon="pi pi-link" rounded @click="CreateLinkDialogVisible = true" />
             <Button icon="pi pi-folder" rounded @click="CategoriesDialogVisible = true" />
           </div>
         </div>
