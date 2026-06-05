@@ -9,6 +9,7 @@ import Aura from '@primeuix/themes/aura'
 
 import App from './App.vue'
 import router from './router'
+import { Toast } from 'primevue'
 
 const app = createApp(App)
 
@@ -18,6 +19,13 @@ app.use(PrimeVue, {
   theme: {
     preset: Aura,
   },
+  pt: {
+    toast: {
+      root: {
+        style: 'max-width: calc(100vw - 40px)'
+      }
+    }
+  }
 })
 app.use(ToastService)
 
