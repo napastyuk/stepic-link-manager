@@ -12,6 +12,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <Toast />
   <TheHeader v-if="authStore.user" />
   <RouterView />
 </template>

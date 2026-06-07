@@ -44,7 +44,6 @@ const submitForm = async ({ valid }) => {
 </script>
 
 <template>
-  <Toast />
   <Form
     v-slot="$form"
     :initial-values="formData"

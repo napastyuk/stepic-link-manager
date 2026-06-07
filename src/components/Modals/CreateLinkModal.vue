@@ -160,7 +160,7 @@ const submitForm = async () => {
   } else {
     await addNewLink()
   }
-  await linksStore.fetchLinks()
+  await linksStore.fetchLinks(true, true)
 }
 
 const textButton = computed(() => {
@@ -179,7 +179,6 @@ watch(modelValue, async (newValue) => {
 </script>
 
 <template>
-  <Toast />
   <Dialog modal :header="textHeader" v-model:visible="modelValue" :style="{ width: '25rem' }">
     <Form v-slot="$form" :initial-values="formInputs" :resolver="resolver" validateOnSubmit
       :validateOnValueUpdate="false" @submit="submitForm">

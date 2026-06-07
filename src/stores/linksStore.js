@@ -2,18 +2,56 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { ref } from 'vue'
 import { supabase } from '@/supabase'
 
+const LIMIT = 6
+
 export const useLinksStore = defineStore('links', () => {
   const isLoading = ref(false)
   const links = ref([])
-  const fetchLinks = async () => {
+  const onlyFavorites = ref(false)
+  const sortByPopular = ref(false)
+  const totalLinks = ref(0)
+  const hasMore = ref(true)
+  const offset = ref(0)
+
+  const fetchLinks = async (resetPages = false, resetFilters = false) => {
     isLoading.value = true
-    const { data, error } = await supabase
-      .from('links')
-      .select('id, name, url, description, is_favorite, preview_image, click_count, categories (id, name)')
-      .order('created_at', { ascending: false })
-    if (error) throw error
-    links.value = data
-    isLoading.value = false
+
+    if (resetPages) {
+      offset.value = 0;
+      links.value = [];
+      hasMore.value = true;
+    }
+
+    if (resetFilters) {
+      sortByPopular.value = false
+      onlyFavorites.value = false
+    }
+
+    try {
+      let query = supabase
+        .from('links')
+        .select('id, name, url, description, is_favorite, preview_image, categories (id, name) ,click_count', {count:'exact'})
+        .range(offset.value, offset.value + LIMIT - 1)
+
+      if (onlyFavorites.value) query = query.eq('is_favorite', true)
+      if (sortByPopular.value) {
+        query = query.order('click_count', { ascending: false })
+      } else {
+        query = query.order('created_at', { ascending: false })
+      }
+
+      const { data, error, count } = await query
+      totalLinks.value = count
+      offset.value += data.length
+      if (error) throw error
+
+      links.value.push(...data)
+      hasMore.value = offset.value < totalLinks.value
+    } catch(e) {
+      console.error('Ошибка загрузки',e)
+    } finally {
+      isLoading.value = false
+    }
   }
 
   const changeIsFavorite = async (id) => {
@@ -47,6 +85,9 @@ export const useLinksStore = defineStore('links', () => {
   return {
     isLoading,
     links,
+    hasMore,
+    onlyFavorites,
+    sortByPopular,
     fetchLinks,
     changeIsFavorite,
     removeLink,
