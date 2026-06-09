@@ -82,6 +82,15 @@ export const useLinksStore = defineStore('links', () => {
     }
   }
 
+  const clearLinkStore = () => {
+    links.value = [];
+    onlyFavorites.value = false
+    sortByPopular.value = false
+    totalLinks.value = 0
+    hasMore.value = true
+    offset.value = 0
+  }
+
   return {
     isLoading,
     links,
@@ -92,6 +101,7 @@ export const useLinksStore = defineStore('links', () => {
     changeIsFavorite,
     removeLink,
     addClickCount,
+    clearLinkStore
   }
 })
 

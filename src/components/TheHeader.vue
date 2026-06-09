@@ -9,8 +9,10 @@ import { useAuth } from '@/composables/useAuth'
 import { useToastNotification } from '@/composables/useToastNotifications'
 import CategoriesModal from './Modals/CategoriesModal.vue'
 import CreateLinkModal from './Modals/CreateLinkModal.vue'
+import { useLinksStore } from '@/stores/linksStore'
 
 const authStore = useUserStore()
+const linksStore = useLinksStore()
 const router = useRouter()
 const { showToast } = useToastNotification()
 const { signOut, errorMessage } = useAuth()
@@ -26,6 +28,7 @@ const signOutUser = async () => {
   try {
     await signOut()
     authStore.resetUser()
+    linksStore.clearLinkStore()
     await router.replace({ name: 'auth' })
   } catch (error) {
     console.error(error)

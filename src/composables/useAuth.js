@@ -2,6 +2,7 @@ import { supabase } from '@/supabase'
 // Работа supabase с регистрацией https://supabase.com/docs/guides/auth/passwords
 import { useRequest } from '@/composables/useRequest'
 
+
 export function useAuth() {
   const { loading, errorMessage, handleRequest } = useRequest()
   const signUp = async ({ email, password, firstname }) => {
@@ -10,9 +11,9 @@ export function useAuth() {
         email,
         password,
       })
-      await supabase.from('users').insert([{ id: data.user.id, firstname, email }])
-      // gpt рекомендует вместо insert пользоваться upsert, чтобы избежать ошибки повторной регистрации. Если сеть тупит то она может появится из-за сетевых retry
       if (error) throw error
+
+      await supabase.from('users').insert([{ id: data.user.id, firstname, email }])
       return data
     })
   }
@@ -31,7 +32,7 @@ export function useAuth() {
   const resetPassword = async (email) => {
     return await handleRequest(async () => {
       const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:5173/reset-password',
+        redirectTo: 'https://stepic-link-manager.netlify.app/reset-password',
       })
       if (error) throw error
       return data
